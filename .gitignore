@@ -1,0 +1,9 @@
+
+bin/Game*
+bin/Libraries/*
+bin/Assets/Models/stress
+
+build/*/*
+
+*.user
+
