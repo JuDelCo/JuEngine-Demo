@@ -23,7 +23,7 @@ message(STATUS "CMAKE_BUILD_CONFIG: ${CMAKE_BUILD_TYPE} (${BUILD_CPU_ARCH})")
 # -------------------------------------------------------------------------------------------------
 
 set(CMAKE_CXX_FLAGS         "-Wall -Werror -fmax-errors=5 -std=c++11 -DGLFW_DLL")
-set(CMAKE_CXX_FLAGS_DEBUG   "-gdwarf-2 -O2 -DDEBUG_ON") # -g
+set(CMAKE_CXX_FLAGS_DEBUG   "-gdwarf-2 -Og -DDEBUG_ON") # -g
 set(CMAKE_CXX_FLAGS_RELEASE "-s -O2")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
@@ -53,7 +53,7 @@ if(UNIX)
 	set(ASSIMP_PATH "/home/judelco/Projects/Libraries/assimp-3.1.1_20151125")
 	set(ATB_PATH "/home/judelco/Projects/Libraries/AntTweakBar-1.1.6")
 	set(JUENGINE_PATH "/home/judelco/Projects/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
-	#set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.so")
+	set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.so")
 elseif(WIN32)
 	set(LINK_FLAGS
 		"-lopengl32"
@@ -83,7 +83,7 @@ elseif(WIN32)
 	set(ASSIMP_PATH "C:/Programacion/CppLibs/Assimp-3.1.1_20150222-${BUILD_CPU_ARCH}/")
 	set(ATB_PATH "C:/Programacion/CppLibs/AntTweakBar-1.16-${BUILD_CPU_ARCH}/")
 	set(JUENGINE_PATH "C:/Programacion/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
-	#set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.dll")
+	set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.dll")
 endif()
 
 # -------------------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ target_link_libraries(${EXECUTABLE_NAME}
 
 # -------------------------------------------------------------------------------------------------
 
-#install(FILES ${JUENGINE_DLL} DESTINATION ${CMAKE_SOURCE_DIR}/bin)
+install(FILES ${JUENGINE_DLL} DESTINATION ${CMAKE_SOURCE_DIR}/bin/Libraries)
 
 #add_custom_command(TARGET JuEngine_Game POST_BUILD
 #	COMMAND "echo."

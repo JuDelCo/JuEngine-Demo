@@ -12,5 +12,5 @@ public:
 	GamePong() = default;
 	~GamePong() = default;
 
-	void Init();
+	void Init(const int argc, const char* argv[]);
 };

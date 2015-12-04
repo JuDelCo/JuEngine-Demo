@@ -5,8 +5,20 @@
 #include "GamePong.hpp"
 #include "Assets.hpp"
 
-void GamePong::Init()
+#if ! defined(_WIN32) && defined(DEBUG_ON)
+	#include <unistd.h>
+#endif
+
+void GamePong::Init(const int argc, const char* argv[])
 {
+	#if ! defined(_WIN32) && defined(DEBUG_ON)
+		if(argc <= 1 || (argc > 1 && strcmp(argv[1], "--noconsole") != 0))
+		{
+			execlp("gnome-terminal", "gnome-terminal", "-x", argv[0], "--noconsole", NULL);
+			exit(0);
+		}
+	#endif
+
 	// ===============================================
 
 	// Load Meshes
