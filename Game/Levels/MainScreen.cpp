@@ -87,12 +87,6 @@ void MainScreen::LoadAdditive()
 	//testObj->GetComponent<Transform>()->Scale(vec3(10.01f, 10.01f, 10.01f));
 	//testObj->GetComponent<Transform>()->Translate(vec3(0.f, 125.0f, 0.f));
 
-	auto sphereTest = EntityManager::Create("sphereTest");
-	sphereTest->GetComponent<Transform>()->SetLocalPosition(vec3(5.f, 50.f, 5.f));
-	sphereTest->CreateComponent<RigidBody>();
-	sphereTest->GetComponent<RigidBody>()->SetMass(1.f);
-	sphereTest->CreateComponent<Collider>();
-
 	DebugLog::Write("Mainscreen level loaded");
 }
 }

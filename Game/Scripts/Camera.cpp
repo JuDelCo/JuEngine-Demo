@@ -67,6 +67,7 @@ void CameraController::Update()
 	if(InputManager::IsHeld("mouse_m") || InputManager::IsHeld("mouse_r"))
 	{
 		auto mousePos = InputManager::MouseGetPosition();
+		auto mouseOldPos = mousePos;
 		mouseDiff = lastMousePoint - mousePos;
 
 		if(mousePos.x < 10.0f)
@@ -87,7 +88,10 @@ void CameraController::Update()
 			mousePos.y = 20.0f;
 		}
 
-		InputManager::MouseSetPosition(mousePos);
+		if(mousePos != mouseOldPos)
+		{
+			InputManager::MouseSetPosition(mousePos);
+		}
 	}
 
 	if(InputManager::IsHeld("mouse_r"))

@@ -50,7 +50,6 @@ if(UNIX)
 	set(GLFW_PATH "/home/judelco/Projects/Libraries/glfw-3.1.2")
 	set(GLEW_PATH "/home/judelco/Projects/Libraries/glew-1.13.0")
 	set(GLM_PATH "/home/judelco/Projects/Libraries/glm-0.9.7.1")
-	set(BULLET3_PATH "/home/judelco/Projects/Libraries/bullet3-20151125")
 	set(ASSIMP_PATH "/home/judelco/Projects/Libraries/assimp-3.1.1_20151125")
 	set(ATB_PATH "/home/judelco/Projects/Libraries/AntTweakBar-1.1.6")
 	set(JUENGINE_PATH "/home/judelco/Projects/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
@@ -81,7 +80,6 @@ elseif(WIN32)
 	set(GLFW_PATH "C:/Programacion/CppLibs/GLFW-3.1.1-${BUILD_CPU_ARCH}")
 	set(GLEW_PATH "C:/Programacion/CppLibs/GLEW-1.12.0-${BUILD_CPU_ARCH}/")
 	set(GLM_PATH "C:/Programacion/CppLibs/GLM-0.9.6.1")
-	set(BULLET3_PATH "C:/Programacion/CppLibs/Bullet-3_20140417-${BUILD_CPU_ARCH}/")
 	set(ASSIMP_PATH "C:/Programacion/CppLibs/Assimp-3.1.1_20150222-${BUILD_CPU_ARCH}/")
 	set(ATB_PATH "C:/Programacion/CppLibs/AntTweakBar-1.16-${BUILD_CPU_ARCH}/")
 	set(JUENGINE_PATH "C:/Programacion/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
@@ -102,7 +100,6 @@ include_directories(
 link_directories(
 	${GLFW_PATH}/lib
 	${GLEW_PATH}/lib
-	${BULLET3_PATH}/lib
 	${ASSIMP_PATH}/lib
 	${ATB_PATH}/lib
 	${JUENGINE_PATH}/lib
@@ -118,7 +115,6 @@ target_link_libraries(${EXECUTABLE_NAME}
 	JuEngine
 	GLEW
 	assimp
-	LinearMath BulletCollision BulletDynamics # Bullet3 Libs
 	AntTweakBar
 )
 
