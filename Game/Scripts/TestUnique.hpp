@@ -12,7 +12,7 @@ class TestUniqueScript : public ScriptBehaviour
 {
 public:
 	TestUniqueScript();
-	~TestUniqueScript();
+	~TestUniqueScript() = default;
 
 	void Init();
 	void Update();
@@ -25,7 +25,5 @@ public:
 	quat startOrientation;
 	quat desiredOrientation;
 	float startInterpolating;
-
-	DebugBar* testBar;
 };
 }

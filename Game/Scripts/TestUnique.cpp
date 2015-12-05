@@ -10,7 +10,6 @@ namespace Scripts
 {
 bool testBool;
 int testInt;
-int testEnum;
 string testString = "prueba :D";
 JuEngine::quat testQuat;
 vec3 testSunPosition;
@@ -18,20 +17,6 @@ vec3 testSunPosition;
 TestUniqueScript::TestUniqueScript()
 {
 	SetName("script_unique_test");
-
-	testBar = new DebugBar("Info");
-	testBar->SetSize(vec2(400, 325));
-	testBar->SetPosition(vec2(25, 25));
-	testBar->SetWidthVar(200);
-	testBar->SetAlpha(150);
-	testBar->SetRefreshRate(0.5f);
-
-	DebugBar::DefineEnum("testEnum", "Valor1,Valor2,Valor3");
-}
-
-TestUniqueScript::~TestUniqueScript()
-{
-	delete testBar;
 }
 
 void TestUniqueScript::Init()
@@ -55,40 +40,6 @@ void TestUniqueScript::Init()
 	}
 
 	TimerManager::Create("interpolation");
-
-	testBar->AddVarReadWrite("IntBool", VarType::BOOL, &testBool, "group='type tests'");
-	testBar->AddVarReadWrite("IntTest", VarType::INT32, &testInt, "group='type tests'");
-	testBar->AddVarReadOnly("IntHexaTest", VarType::INT32, &testInt, "group='type tests'");
-	testBar->SetVarHexadecimal("IntHexaTest", true);
-	testBar->AddVarReadOnly("LightCounter", VarType::FLOAT, &lightCounter, "group='type tests'");
-	testBar->SetVarNumPrecision("LightCounter", 2);
-	testBar->AddVarReadWrite("StringTest", VarType::STRING, &testString, "group='type tests'");
-	testBar->AddVarReadWrite("EnumTest", "testEnum", &testEnum, "group='type tests'");
-	testBar->AddVarCallback("skyColor", VarType::COLOR3,
-	[](const void* value, void*) {},
-	[](void* value, void*)
-	{
-		*(vec3*)value = EntityManager::GetWorld()->GetSkyColor();
-	});
-	testBar->SetVarReadOnly("skyColor", true);
-	testBar->AddSeparator("separator1");
-	testBar->AddVarCallback("sunPos", VarType::DIR3,
-	[](const void* value, void*) {},
-	[](void* value, void*)
-	{
-		testSunPosition = glm::normalize(EntityManager::Get("camera")->GetComponent<Transform>()->GetPosition() - EntityManager::Get("sun")->GetComponent<Transform>()->GetPosition());
-		testSunPosition = -EntityManager::Get("camera")->GetComponent<Transform>()->InverseTransformDirection(testSunPosition);
-		testSunPosition = vec3(testSunPosition.x, testSunPosition.y, -testSunPosition.z);
-		*(vec3*)value = testSunPosition;
-	});
-	testBar->SetVarReadOnly("sunPos", true);
-	testBar->SetGroupOpened("sunPos", true);
-	testBar->SetVarArrowShowValues("sunPos", false);
-	testBar->AddSeparator("separator2");
-	testBar->AddButton("boton",
-	[](void*) {
-		DebugLog::Write("Botoncito!");
-	});
 }
 
 void TestUniqueScript::Update()
@@ -122,11 +73,11 @@ void TestUniqueScript::Update()
 
 	if(InputManager::IsHeld("n_up"))
 	{
-		EntityManager::Get("light")->GetComponent<Transform>()->Translate(vec3(0.f, 0.02f, 0.f));
+		//EntityManager::Get("light")->GetComponent<Transform>()->Translate(vec3(0.f, 0.02f, 0.f));
 	}
 	if(InputManager::IsHeld("n_down"))
 	{
-		EntityManager::Get("light")->GetComponent<Transform>()->Translate(vec3(0.f, -0.02f, 0.f));
+		//EntityManager::Get("light")->GetComponent<Transform>()->Translate(vec3(0.f, -0.02f, 0.f));
 	}
 
 	if(! InputManager::IsWindowActive())
