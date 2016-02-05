@@ -6,11 +6,11 @@
 
 #include <JuEngine/Includes.hpp>
 
-class GamePong : public Application
+class GameController : public Application
 {
 public:
-	GamePong() = default;
-	~GamePong() = default;
+	GameController() = default;
+	~GameController() = default;
 
 	void Init(const int argc, const char* argv[]);
 };

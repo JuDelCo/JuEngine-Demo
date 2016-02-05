@@ -2,14 +2,14 @@
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
-#include "GamePong.hpp"
+#include "GameController.hpp"
 #include "Assets.hpp"
 
 #if ! defined(_WIN32) && defined(DEBUG_ON)
 	#include <unistd.h>
 #endif
 
-void GamePong::Init(const int argc, const char* argv[])
+void GameController::Init(const int argc, const char* argv[])
 {
 	#if ! defined(_WIN32) && defined(DEBUG_ON)
 		if(argc <= 1 || (argc > 1 && strcmp(argv[1], "--noconsole") != 0))

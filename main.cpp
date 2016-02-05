@@ -2,11 +2,11 @@
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
-#include "Game/GamePong.hpp"
+#include "Game/GameController.hpp"
 
 int main(const int argc, const char* argv[])
 {
-	GamePong app{};
+	GameController app{};
 
 	app.Init(argc, argv);
 	app.Run();
