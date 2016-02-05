@@ -49,6 +49,35 @@ void TestUniqueScript::Update()
 		Application::Stop();
 	}
 
+// ----------------------------------------------------------------------
+
+	static bool show_debug_window = true;
+
+	ImGui::Begin("Debug", &show_debug_window);
+	ImGui::Text("App average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::SliderFloat("lightCounter", &lightCounter, 0.0f, 64.0f, "%.2f"); // READONLY
+	ImGui::ColorEdit3("skyColor", (float*)&EntityManager::GetWorld()->GetSkyColor()); // READONLY
+
+	if(ImGui::Button("Test button"))
+	{
+		DebugLog::Write("Test button pressed!");
+	}
+	ImGui::End();
+
+/*
+	testBar->AddVarCallback("sunPos", VarType::DIR3,
+	[](const void* value, void*) {},
+	[](void* value, void*)
+	{
+		testSunPosition = glm::normalize(EntityManager::Get("camera")->GetComponent<Transform>()->GetPosition() - EntityManager::Get("sun")->GetComponent<Transform>()->GetPosition());
+		testSunPosition = -EntityManager::Get("camera")->GetComponent<Transform>()->InverseTransformDirection(testSunPosition);
+		testSunPosition = vec3(testSunPosition.x, testSunPosition.y, -testSunPosition.z);
+		*(vec3*)value = testSunPosition;
+	});
+	testBar->SetVarReadOnly("sunPos", true);
+*/
+// ----------------------------------------------------------------------
+
 	if(TimerManager::Get("fps")->GetTimeElapsed().AsSeconds() >= 0.5f)
 	{
 		std::stringstream mBufferTest;

@@ -6,4 +6,5 @@ bin/Assets/Models/stress
 build/*/*
 
 *.user
+*.user.*
 
