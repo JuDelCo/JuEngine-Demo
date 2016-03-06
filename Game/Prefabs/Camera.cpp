@@ -1,25 +1,22 @@
-// Copyright (c) 2015 Juan Delgado (JuDelCo)
+// Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #include "Camera.hpp"
-#include "../Scripts/Camera.hpp"
-#include "../Scripts/TestUnique.hpp" // TEST
+#include <JuEngine/Entity/Pool.hpp>
+#include <JuEngine/Components/Transform.hpp>
+#include <JuEngine/Components/Camera.hpp>
+#include "../Features/Camera/CameraComponent.hpp"
 
 namespace Prefabs
 {
-CameraEditor::CameraEditor()
+auto Camera::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
 {
-	SetName("prefab_camera");
-}
+	auto entity = pool->CreateEntity();
 
-auto CameraEditor::Create() -> Entity*
-{
-	auto entity = EntityManager::Create("camera");
-
-	entity->CreateComponent<Camera>(); //->SetCurrent();
-	entity->CreateComponent<Scripts::CameraController>();
-	entity->CreateComponent<Scripts::TestUniqueScript>(); // TEST
+	entity->Add<JuEngine::Transform>();
+	entity->Add<JuEngine::Camera>(entity->GetTransform());
+	entity->Add<Components::Camera>();
 
 	return entity;
 }

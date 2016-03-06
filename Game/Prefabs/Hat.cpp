@@ -1,24 +1,23 @@
-// Copyright (c) 2015 Juan Delgado (JuDelCo)
+// Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #include "Hat.hpp"
+#include <JuEngine/Entity/Pool.hpp>
+#include <JuEngine/Components/Transform.hpp>
+#include <JuEngine/Components/MeshRenderer.hpp>
 
 namespace Prefabs
 {
-Hat::Hat()
+auto Hat::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
 {
-	SetName("prefab_hat");
-}
+	auto entity = pool->CreateEntity();
 
-auto Hat::Create() -> Entity*
-{
-	auto entity = EntityManager::Create("hat");
+	entity->Add<JuEngine::Transform>();
+	// TODO: Fix orientation in Blender !
+	entity->GetTransform()->Rotate(vec3(-JuEngine::Math::PI / 2.f, 0.f, 0.f));
 
-	// TODO: Arreglar desviación (de orientación) en Blender !
-	entity->GetComponent<Transform>()->Rotate(vec3(-Math::PI / 2.0f, 0.f, 0.f));
-	entity->GetComponent<Transform>()->Translate(vec3(0.f, 0.02f, 0.01f));
-	entity->CreateComponent<MeshRenderer>("obj_hat", "mat_vertexLit");
+	entity->Add<JuEngine::MeshRenderer>("obj_hat", "mat_vertexLit");
 
 	return entity;
 }

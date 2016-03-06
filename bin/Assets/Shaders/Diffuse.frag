@@ -20,6 +20,7 @@ layout (std140) uniform World
 
 uniform mat4 modelToWorldMatrix;
 
+// TODO
 //uniform vec3 lightPos;
 //uniform vec3 lightColor;
 

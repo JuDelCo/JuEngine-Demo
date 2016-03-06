@@ -1,4 +1,10 @@
 
+# Copyright (c) 2016 Juan Delgado (JuDelCo)
+# License: GPLv3 License
+# GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
+
+# ----------------------------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.0)
 
 if(NOT CONFIGURED_ONCE)
@@ -31,6 +37,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(EXECUTABLE_NAME Game_${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH})
 file(GLOB_RECURSE GAME_SRC Game/*.*pp)
+file(GLOB_RECURSE TEST_SRC Tests/*.*pp)
 
 if(${BUILD_CPU_ARCH} STREQUAL "x64")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
@@ -105,6 +112,7 @@ link_directories(
 add_executable(${EXECUTABLE_NAME}
 	main.cpp
 	${GAME_SRC}
+	${TEST_SRC}
 )
 
 target_link_libraries(${EXECUTABLE_NAME}

@@ -1,16 +1,19 @@
-// Copyright (c) 2015 Juan Delgado (JuDelCo)
+// Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #pragma once
 
-#include <JuEngine/Includes.hpp>
+#include <JuEngine/Application.hpp>
 
-class GameController : public Application
+class GameController : public JuEngine::Application
 {
-public:
-	GameController() = default;
-	~GameController() = default;
+	public:
+		GameController() = default;
 
-	void Init(const int argc, const char* argv[]);
+		void Init(const int argc, const char* argv[]);
+
+	protected:
+		void LoadAssets();
+		void ConfigureInput();
 };

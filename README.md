@@ -35,6 +35,7 @@ Note: Random-ordered and may be very old
 ![Img dark space](http://i.imgur.com/df8qBDv.png)
 ![Img gui](http://i.imgur.com/ZEeLwL1.png)
 ![Img sunlight](http://i.imgur.com/QSTiMA5.png)
+![Img duckclose](http://i.imgur.com/G1uKExD.jpg)
 ![Img dragon](http://i.imgur.com/WjyfssZ.jpg)
 ![Img angel](http://i.imgur.com/8F4jx1Z.jpg)
 ![Img statue](http://i.imgur.com/qAzLxSm.jpg)

@@ -1,4 +1,8 @@
 
+:: Copyright (c) 2016 Juan Delgado (JuDelCo)
+:: License: GPLv3 License
+:: GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
+
 @echo off
 
 set PATH=%PATH%;C:\Programacion\CppLibs\TDM-GCC_4.9.2-x86\bin

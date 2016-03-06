@@ -8,10 +8,10 @@
 
 namespace Prefabs
 {
-class Grid : public JuEngine::Prefab
+class Sun : public JuEngine::Prefab
 {
 	public:
-		Grid() { SetId("prefab_grid"); }
+		Sun() { SetId("prefab_sun"); }
 		auto Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr;
 };
 }

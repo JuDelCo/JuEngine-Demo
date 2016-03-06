@@ -1,19 +1,17 @@
-// Copyright (c) 2015 Juan Delgado (JuDelCo)
+// Copyright (c) 2016 Juan Delgado (JuDelCo)
 // License: GPLv3 License
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #pragma once
 
-#include <JuEngine/Includes.hpp>
+#include <JuEngine/Resources/Prefab.hpp>
 
 namespace Prefabs
 {
-class CameraEditor : public Prefab
+class Camera : public JuEngine::Prefab
 {
-public:
-	CameraEditor();
-	~CameraEditor() = default;
-
-	auto Create() -> Entity*;
+	public:
+		Camera() { SetId("prefab_camera"); }
+		auto Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr;
 };
 }
