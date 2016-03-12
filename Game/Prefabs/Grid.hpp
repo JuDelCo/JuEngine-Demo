@@ -6,12 +6,14 @@
 
 #include <JuEngine/Resources/Prefab.hpp>
 
+using namespace JuEngine;
+
 namespace Prefabs
 {
-class Grid : public JuEngine::Prefab
+class Grid : public Prefab
 {
 	public:
 		Grid() { SetId("prefab_grid"); }
-		auto Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr;
+		auto Create(Pool* pool) -> EntityPtr;
 };
 }

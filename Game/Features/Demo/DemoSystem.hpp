@@ -6,18 +6,20 @@
 
 #include <JuEngine/Entity/ISystem.hpp>
 
+using namespace JuEngine;
+
 namespace Systems
 {
-class Demo : public JuEngine::IInitializeSystem, public JuEngine::IExecuteSystem, public JuEngine::ISetPoolSystem
+class Demo : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
 {
 	public:
 		Demo() = default;
 
-		void SetPool(JuEngine::Pool* pool);
+		void SetPool(Pool* pool);
 		void Initialize();
 		void Execute();
 
 	private:
-		JuEngine::Pool* mPool;
+		Pool* mPool;
 };
 }

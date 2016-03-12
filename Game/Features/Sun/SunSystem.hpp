@@ -6,18 +6,20 @@
 
 #include <JuEngine/Entity/ISystem.hpp>
 
+using namespace JuEngine;
+
 namespace Systems
 {
-class Sun : public JuEngine::IExecuteSystem, public JuEngine::ISetPoolSystem
+class Sun : public IExecuteSystem, public ISetPoolSystem
 {
 	public:
 		Sun() = default;
 
-		void SetPool(JuEngine::Pool* pool);
+		void SetPool(Pool* pool);
 		void Execute();
 
 	private:
-		JuEngine::Pool* mPool;
+		Pool* mPool;
 
 		float sunCounter{0.f};
 		float sunVel{0.1f};

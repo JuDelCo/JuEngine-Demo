@@ -4,9 +4,11 @@
 
 #pragma once
 
-#include <JuEngine/Application.hpp>
+#include <JuEngine/AppController.hpp>
 
-class GameController : public JuEngine::Application
+using namespace JuEngine;
+
+class GameController : public AppController
 {
 	public:
 		GameController() = default;

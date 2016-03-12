@@ -6,17 +6,19 @@
 
 #include <JuEngine/Entity/ISystem.hpp>
 
+using namespace JuEngine;
+
 namespace Systems
 {
-class Camera : public JuEngine::IExecuteSystem, public JuEngine::ISetPoolSystem
+class Camera : public IExecuteSystem, public ISetPoolSystem
 {
 	public:
 		Camera() = default;
 
-		void SetPool(JuEngine::Pool* pool);
+		void SetPool(Pool* pool);
 		void Execute();
 
 	private:
-		JuEngine::Pool* mPool;
+		Pool* mPool;
 };
 }

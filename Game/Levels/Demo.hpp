@@ -6,9 +6,11 @@
 
 #include <JuEngine/Resources/Level.hpp>
 
+using namespace JuEngine;
+
 namespace Levels
 {
-class Demo : public JuEngine::Level
+class Demo : public Level
 {
 	public:
 		Demo() { SetId("lvl_demo"); }

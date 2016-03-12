@@ -6,11 +6,12 @@
 
 #include <JuEngine/Entity/IComponent.hpp>
 
+using namespace JuEngine;
+
 namespace Components
 {
-class Sun : public JuEngine::IComponent
+struct Sun : public IComponent
 {
-	public:
-		void Reset() {}
+	void Reset() {}
 };
 }

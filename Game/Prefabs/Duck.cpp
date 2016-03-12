@@ -10,12 +10,12 @@
 
 namespace Prefabs
 {
-auto Duck::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Duck::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
-	entity->Add<JuEngine::MeshRenderer>("obj_duck", "mat_vertexLit");
+	entity->Add<Transform>();
+	entity->Add<MeshRenderer>("obj_duck", "mat_vertexLit");
 	entity->Add<Components::Duck>();
 
 	return entity;

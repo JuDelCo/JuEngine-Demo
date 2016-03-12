@@ -9,12 +9,12 @@
 
 namespace Prefabs
 {
-auto Grid::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Grid::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
-	entity->Add<JuEngine::MeshRenderer>("obj_grid", "mat_vertexColor");
+	entity->Add<Transform>();
+	entity->Add<MeshRenderer>("obj_grid", "mat_vertexColor");
 
 	return entity;
 }

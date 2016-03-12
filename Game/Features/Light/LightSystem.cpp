@@ -3,18 +3,14 @@
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #include "LightSystem.hpp"
+#include "LightComponent.hpp"
+#include <JuEngine/Entity/Group.hpp>
 #include <JuEngine/Entity/Pool.hpp>
 #include <JuEngine/Components/Transform.hpp>
-#include <JuEngine/Components/Camera.hpp>
-#include <JuEngine/Components/World.hpp>
-#include <JuEngine/Managers/InputManager.hpp>
-#include <JuEngine/Managers/WindowManager.hpp>
-#include <JuEngine/Resources/DebugLog.hpp>
-#include "LightComponent.hpp"
 
 namespace Systems
 {
-void Light::SetPool(JuEngine::Pool* pool)
+void Light::SetPool(Pool* pool)
 {
 	mPool = pool;
 }
@@ -26,7 +22,7 @@ void Light::Execute()
 
 	for(auto &light : lights)
 	{
-		light->UseTransform()->SetLocalPosition(vec3(sin(lightCounter + JuEngine::Math::PI * offset) * 5.f, 1.f, cos(lightCounter + JuEngine::Math::PI * offset) * 5.f));
+		light->Use<Transform>()->SetLocalPosition(vec3(sin(lightCounter + Math::PI * offset) * 5.f, 1.f, cos(lightCounter + Math::PI * offset) * 5.f));
 		offset += 0.5f;
 	}
 

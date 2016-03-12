@@ -5,19 +5,21 @@
 #pragma once
 
 #include <JuEngine/Entity/IComponent.hpp>
+#include <JuEngine/Resources/Math.hpp>
+
+using namespace JuEngine;
 
 namespace Components
 {
-class Camera : public JuEngine::IComponent
+struct Camera : public IComponent
 {
-	public:
-		vec2 lastMousePoint;
-		vec2 mouseDiff;
+	vec2 lastMousePoint;
+	vec2 mouseDiff;
 
-		void Reset(vec2 lastMousePoint = vec2(0.f,0.f), vec2 mouseDiff = vec2(0.f,0.f))
-		{
-			this->lastMousePoint = lastMousePoint;
-			this->lastMousePoint = mouseDiff;
-		}
+	void Reset(vec2 lastMousePoint = vec2(0.f,0.f), vec2 mouseDiff = vec2(0.f,0.f))
+	{
+		this->lastMousePoint = lastMousePoint;
+		this->lastMousePoint = mouseDiff;
+	}
 };
 }

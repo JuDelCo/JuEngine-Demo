@@ -11,15 +11,15 @@
 
 namespace Prefabs
 {
-auto Sun::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Sun::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
-	entity->GetTransform()->Scale(vec3(85.f, 85.f, 85.1f));
+	entity->Add<Transform>();
+	entity->Get<Transform>()->Scale(vec3(85.f, 85.f, 85.1f));
 
-	entity->Add<JuEngine::MeshRenderer>("obj_sphere", "mat_light");
-	entity->Add<JuEngine::Light>(vec3(1.f, 0.956f, 0.839f), 1.f, JuEngine::LightType::LIGHT_DIRECTIONAL);
+	entity->Add<MeshRenderer>("obj_sphere", "mat_light");
+	entity->Add<Light>(vec3(1.f, 0.956f, 0.839f), 1.f, LightType::LIGHT_DIRECTIONAL);
 	entity->Add<Components::Sun>();
 
 	return entity;

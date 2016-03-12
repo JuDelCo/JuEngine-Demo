@@ -13,11 +13,13 @@ int main(const int argc, const char* argv[])
 		return bandit::run(2, (char**)arguments);
 	}*/
 
-	GameController app{};
+	GameController* app = new GameController();
 
 	char const* arguments[] = {"JuEngine_Game", "--noconsole"};
-	app.Init(2, arguments);
-	app.Run();
+	app->Init(2, arguments);
+	app->Run();
+
+	delete app;
 
 	return 0;
 }

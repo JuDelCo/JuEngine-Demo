@@ -6,11 +6,12 @@
 
 #include <JuEngine/Entity/IComponent.hpp>
 
+using namespace JuEngine;
+
 namespace Components
 {
-class Light : public JuEngine::IComponent
+struct Light : public IComponent
 {
-	public:
-		void Reset() {}
+	void Reset() {}
 };
 }

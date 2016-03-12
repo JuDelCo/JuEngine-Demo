@@ -11,12 +11,12 @@
 
 namespace Prefabs
 {
-auto Light::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Light::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
-	entity->Add<JuEngine::MeshRenderer>("obj_cube", "mat_light");
+	entity->Add<Transform>();
+	entity->Add<MeshRenderer>("obj_cube", "mat_light");
 	entity->Add<JuEngine::Light>(vec3(1.f, 1.f, 1.f), 0.2f);
 	entity->Add<Components::Light>();
 

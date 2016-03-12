@@ -6,12 +6,14 @@
 
 #include <JuEngine/Resources/Prefab.hpp>
 
+using namespace JuEngine;
+
 namespace Prefabs
 {
-class Hat : public JuEngine::Prefab
+class Hat : public Prefab
 {
 	public:
 		Hat() { SetId("prefab_hat"); }
-		auto Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr;
+		auto Create(Pool* pool) -> EntityPtr;
 };
 }

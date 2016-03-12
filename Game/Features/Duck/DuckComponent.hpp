@@ -6,11 +6,12 @@
 
 #include <JuEngine/Entity/IComponent.hpp>
 
+using namespace JuEngine;
+
 namespace Components
 {
-class Duck : public JuEngine::IComponent
+struct Duck : public IComponent
 {
-	public:
-		void Reset() {}
+	void Reset() {}
 };
 }

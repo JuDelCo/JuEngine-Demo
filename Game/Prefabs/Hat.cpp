@@ -9,15 +9,15 @@
 
 namespace Prefabs
 {
-auto Hat::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Hat::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
+	entity->Add<Transform>();
 	// TODO: Fix orientation in Blender !
-	entity->GetTransform()->Rotate(vec3(-JuEngine::Math::PI / 2.f, 0.f, 0.f));
+	entity->Get<Transform>()->Rotate(vec3(-Math::PI / 2.f, 0.f, 0.f));
 
-	entity->Add<JuEngine::MeshRenderer>("obj_hat", "mat_vertexLit");
+	entity->Add<MeshRenderer>("obj_hat", "mat_vertexLit");
 
 	return entity;
 }

@@ -7,19 +7,21 @@
 #include <JuEngine/Entity/ISystem.hpp>
 #include <JuEngine/Resources/Math.hpp>
 
+using namespace JuEngine;
+
 namespace Systems
 {
-class Duck : public JuEngine::IInitializeSystem, public JuEngine::IExecuteSystem, public JuEngine::ISetPoolSystem
+class Duck : public IInitializeSystem, public IExecuteSystem, public ISetPoolSystem
 {
 	public:
 		Duck() = default;
 
-		void SetPool(JuEngine::Pool* pool);
+		void SetPool(Pool* pool);
 		void Initialize();
 		void Execute();
 
 	private:
-		JuEngine::Pool* mPool;
+		Pool* mPool;
 
 		vec2 lastMousePoint{0.f,0.f};
 		vec2 mouseDiff{0.f,0.f};

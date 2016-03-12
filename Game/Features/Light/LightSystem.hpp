@@ -6,18 +6,20 @@
 
 #include <JuEngine/Entity/ISystem.hpp>
 
+using namespace JuEngine;
+
 namespace Systems
 {
-class Light : public JuEngine::IExecuteSystem, public JuEngine::ISetPoolSystem
+class Light : public IExecuteSystem, public ISetPoolSystem
 {
 	public:
 		Light() = default;
 
-		void SetPool(JuEngine::Pool* pool);
+		void SetPool(Pool* pool);
 		void Execute();
 
 	private:
-		JuEngine::Pool* mPool;
+		Pool* mPool;
 
 		float lightCounter{0.f};
 };

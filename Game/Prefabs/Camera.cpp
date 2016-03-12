@@ -10,12 +10,12 @@
 
 namespace Prefabs
 {
-auto Camera::Create(JuEngine::Pool* pool) -> JuEngine::EntityPtr
+auto Camera::Create(Pool* pool) -> EntityPtr
 {
 	auto entity = pool->CreateEntity();
 
-	entity->Add<JuEngine::Transform>();
-	entity->Add<JuEngine::Camera>(entity->GetTransform());
+	entity->Add<Transform>();
+	entity->Add<JuEngine::Camera>(entity->Get<Transform>());
 	entity->Add<Components::Camera>();
 
 	return entity;

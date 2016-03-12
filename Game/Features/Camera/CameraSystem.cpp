@@ -3,120 +3,121 @@
 // GPLv3 License web page: http://www.gnu.org/licenses/gpl.txt
 
 #include "CameraSystem.hpp"
+#include "CameraComponent.hpp"
+#include <JuEngine/Entity/Group.hpp>
 #include <JuEngine/Entity/Pool.hpp>
 #include <JuEngine/Components/Transform.hpp>
 #include <JuEngine/Components/Camera.hpp>
 #include <JuEngine/Components/World.hpp>
-#include <JuEngine/Managers/InputManager.hpp>
-#include <JuEngine/Managers/WindowManager.hpp>
-#include <JuEngine/Resources/DebugLog.hpp>
-#include "CameraComponent.hpp"
+#include <JuEngine/App.hpp>
+#include <JuEngine/Services/IInputService.hpp>
+#include <JuEngine/Services/IWindowService.hpp>
 
 namespace Systems
 {
-void Camera::SetPool(JuEngine::Pool* pool)
+void Camera::SetPool(Pool* pool)
 {
 	mPool = pool;
 }
 
 void Camera::Execute()
 {
-	if(! JuEngine::InputManager::IsWindowActive())
+	if(! App::Window()->HasFocus())
 	{
 		return;
 	}
 
-	auto entity = mPool->GetGroup(Matcher_AllOf(JuEngine::Transform, JuEngine::Camera, Components::Camera))->GetSingleEntity();
+	auto entity = mPool->GetGroup(Matcher_AllOf(Transform, JuEngine::Camera, Components::Camera))->GetSingleEntity();
 	auto camera = entity->Use<JuEngine::Camera>();
 	auto cameraData = entity->Get<Components::Camera>();
-	auto transform = entity->UseTransform();
+	auto transform = entity->Use<Transform>();
 
 	vec3 oldPos = transform->GetPosition();
 
 	float cameraMovSpeed{10.f};
-	if(JuEngine::InputManager::IsHeld("shift")) cameraMovSpeed = 2.f;
-	if(JuEngine::InputManager::IsHeld("ctrl")) cameraMovSpeed = 100.f;
+	if(App::Input()->IsHeld("shift"))       cameraMovSpeed = 2.f;
+	if(App::Input()->IsHeld("ctrl"))        cameraMovSpeed = 100.f;
 
-	if(JuEngine::InputManager::IsHeld("right"))		transform->Translate(JuEngine::World::Right / cameraMovSpeed);
-	if(JuEngine::InputManager::IsHeld("left"))		transform->Translate(-JuEngine::World::Right / cameraMovSpeed);
-	if(JuEngine::InputManager::IsHeld("up"))		transform->Translate(JuEngine::World::Up / cameraMovSpeed);
-	if(JuEngine::InputManager::IsHeld("down"))		transform->Translate(-JuEngine::World::Up / cameraMovSpeed);
-	if(JuEngine::InputManager::IsHeld("forward"))	transform->Translate(JuEngine::World::Forward / cameraMovSpeed);
-	if(JuEngine::InputManager::IsHeld("backward"))	transform->Translate(-JuEngine::World::Forward / cameraMovSpeed);
+	if(App::Input()->IsHeld("right"))       transform->Translate(World::Right / cameraMovSpeed);
+	if(App::Input()->IsHeld("left"))        transform->Translate(-World::Right / cameraMovSpeed);
+	if(App::Input()->IsHeld("up"))          transform->Translate(World::Up / cameraMovSpeed);
+	if(App::Input()->IsHeld("down"))        transform->Translate(-World::Up / cameraMovSpeed);
+	if(App::Input()->IsHeld("forward"))     transform->Translate(World::Forward / cameraMovSpeed);
+	if(App::Input()->IsHeld("backward"))    transform->Translate(-World::Forward / cameraMovSpeed);
 
-	if(JuEngine::InputManager::IsHeld("left_alt"))    camera->Rotate(0.f, -0.05f);
-	if(JuEngine::InputManager::IsHeld("right_alt"))   camera->Rotate(0.f, 0.05f);
-	if(JuEngine::InputManager::IsHeld("up_alt"))      camera->Rotate(0.05f, 0.f);
-	if(JuEngine::InputManager::IsHeld("down_alt"))    camera->Rotate(-0.05f, 0.f);
+	if(App::Input()->IsHeld("left_alt"))    camera->Rotate(0.f, -0.05f);
+	if(App::Input()->IsHeld("right_alt"))   camera->Rotate(0.f, 0.05f);
+	if(App::Input()->IsHeld("up_alt"))      camera->Rotate(0.05f, 0.f);
+	if(App::Input()->IsHeld("down_alt"))    camera->Rotate(-0.05f, 0.f);
 
-	if(JuEngine::InputManager::MouseGetWheelDelta() != 0)
+	if(App::Input()->MouseGetWheelDelta() != 0)
 	{
 		if(camera->IsOrthographic())
 		{
-			camera->SetZoom(camera->GetZoom() + (float)JuEngine::InputManager::MouseGetWheelDelta() * 5.f);
-			JuEngine::DebugLog::Write("Zoom: %f", camera->GetZoom());
+			camera->SetZoom(camera->GetZoom() + (float)App::Input()->MouseGetWheelDelta() * 5.f);
+			App::Log()->Debug("Zoom: %f", camera->GetZoom());
 		}
 		else
 		{
-			//camera->SetFov(camera->GetFov() + (float)InputManager::MouseGetWheelDelta() * 5.f);
+			//camera->SetFov(camera->GetFov() + (float)App::Input()->MouseGetWheelDelta() * 5.f);
 			//DebugLog::Write("Fov: %f", camera->GetFov());
 
-			transform->Translate(JuEngine::World::Forward / cameraMovSpeed * (float)JuEngine::InputManager::MouseGetWheelDelta() * 10.f);
+			transform->Translate(World::Forward / cameraMovSpeed * (float)App::Input()->MouseGetWheelDelta() * 10.f);
 		}
 	}
 
-	if(JuEngine::InputManager::IsPressed("mouse_m") || JuEngine::InputManager::IsPressed("mouse_r"))
+	if(App::Input()->IsPressed("mouse_m") || App::Input()->IsPressed("mouse_r"))
 	{
-		cameraData->lastMousePoint = JuEngine::InputManager::MouseGetPosition();
+		cameraData->lastMousePoint = App::Input()->MouseGetPosition();
 	}
 
-	if(JuEngine::InputManager::IsHeld("mouse_m") || JuEngine::InputManager::IsHeld("mouse_r"))
+	if(App::Input()->IsHeld("mouse_m") || App::Input()->IsHeld("mouse_r"))
 	{
-		auto mousePos = JuEngine::InputManager::MouseGetPosition();
+		auto mousePos = App::Input()->MouseGetPosition();
 		auto mouseOldPos = mousePos;
 		cameraData->mouseDiff = cameraData->lastMousePoint - mousePos;
 
 		if(mousePos.x < 10.f)
 		{
-			mousePos.x = JuEngine::WindowManager::GetSize().x - 20.f;
+			mousePos.x = App::Window()->GetSize().x - 20.f;
 		}
-		else if(mousePos.x > JuEngine::WindowManager::GetSize().x - 10.f)
+		else if(mousePos.x > App::Window()->GetSize().x - 10.f)
 		{
 			mousePos.x = 20.f;
 		}
 
 		if(mousePos.y < 10.f)
 		{
-			mousePos.y = JuEngine::WindowManager::GetSize().y - 20.f;
+			mousePos.y = App::Window()->GetSize().y - 20.f;
 		}
-		else if(mousePos.y > JuEngine::WindowManager::GetSize().y - 10.f)
+		else if(mousePos.y > App::Window()->GetSize().y - 10.f)
 		{
 			mousePos.y = 20.f;
 		}
 
 		if(mousePos != mouseOldPos)
 		{
-			JuEngine::InputManager::MouseSetPosition(mousePos);
+			App::Input()->MouseSetPosition(mousePos);
 		}
 	}
 
-	if(JuEngine::InputManager::IsHeld("mouse_r"))
+	if(App::Input()->IsHeld("mouse_r"))
 	{
 		camera->Rotate(-cameraData->mouseDiff.y / 300.f, -cameraData->mouseDiff.x / 300.f);
 	}
-	else if(JuEngine::InputManager::IsHeld("mouse_m"))
+	else if(App::Input()->IsHeld("mouse_m"))
 	{
-		transform->Translate(JuEngine::World::Right / cameraMovSpeed * (cameraData->mouseDiff.x / 10.f));
-		transform->Translate(JuEngine::World::Up / cameraMovSpeed * -(cameraData->mouseDiff.y / 10.f));
+		transform->Translate(World::Right / cameraMovSpeed * (cameraData->mouseDiff.x / 10.f));
+		transform->Translate(World::Up / cameraMovSpeed * -(cameraData->mouseDiff.y / 10.f));
 	}
 
-	if(JuEngine::InputManager::IsHeld("debug"))
+	if(App::Input()->IsHeld("debug"))
 	{
 		//vec3 worldUp = vec3(0.5f, 0.5f, 0.f);
 		//transform->LookAt(EntityManager_old::Get("duck")->GetComponent<Transform_old>()->GetPosition(), worldUp);
 	}
 
-	if(JuEngine::InputManager::IsPressed("debug"))
+	if(App::Input()->IsPressed("debug"))
 	{
 		//camera->SetOrthographic(! camera->IsOrthographic());
 	}
@@ -139,9 +140,9 @@ void Camera::Execute()
 		//DebugLog::Write("%f %f %f", res.x, res.y, res.z);
 	}
 
-	if(JuEngine::InputManager::IsHeld("mouse_m") || JuEngine::InputManager::IsHeld("mouse_r"))
+	if(App::Input()->IsHeld("mouse_m") || App::Input()->IsHeld("mouse_r"))
 	{
-		cameraData->lastMousePoint = JuEngine::InputManager::MouseGetPosition();
+		cameraData->lastMousePoint = App::Input()->MouseGetPosition();
 	}
 }
 }
