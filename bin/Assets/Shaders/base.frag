@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 smooth in vec4 interpolatedColor;
 

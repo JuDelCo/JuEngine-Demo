@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 smooth in vec4 vPosition;
 smooth in vec3 vNormal;
@@ -45,14 +45,15 @@ void main()
 
 	float cosAngIncidence = clamp(dot(normalize(vNormal), dirToLight), 0, 1);
 	vec3 viewDirection = -normalize(vPosition.xyz);
-	vec3 reflectDir = reflect(-dirToLight, normalize(vNormal)); // -dirToLight - 2 * (dot(normalize(vNormal), -dirToLight)) * normalize(vNormal);
-	float phongTerm = dot(viewDirection, reflectDir);
-	phongTerm = clamp(phongTerm, 0, 1);
-	phongTerm = cosAngIncidence != 0.0 ? phongTerm : 0.0;
-	phongTerm = pow(phongTerm, shininessFactor);
+	vec3 halfAngle = normalize(dirToLight + viewDirection);
+
+	float blinnTerm = dot(normalize(vNormal), halfAngle);
+	blinnTerm = clamp(blinnTerm, 0, 1);
+	blinnTerm = cosAngIncidence != 0.0 ? blinnTerm : 0.0;
+	blinnTerm = pow(blinnTerm, shininessFactor);
 
 	outputColor = vec4(
 		(vColor * attenIntensity * cosAngIncidence) +
-		(specularColor * attenIntensity * phongTerm) +
+		(specularColor * attenIntensity * blinnTerm) +
 		(vColor * ambientLight), 1.0);
 }

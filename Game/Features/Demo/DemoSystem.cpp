@@ -56,7 +56,7 @@ void Demo::Execute()
 		[](const void* value, void*) {},
 		[](void* value, void*)
 		{
-			testSunPosition = glm::normalize(EntityManager_old::Get("camera")->GetComponent<Transform_old>()->GetPosition() - EntityManager_old::Get("sun")->GetComponent<Transform_old>()->GetPosition());
+			testSunPosition = Math::Normalize(EntityManager_old::Get("camera")->GetComponent<Transform_old>()->GetPosition() - EntityManager_old::Get("sun")->GetComponent<Transform_old>()->GetPosition());
 			testSunPosition = -EntityManager_old::Get("camera")->GetComponent<Transform_old>()->InverseTransformDirection(testSunPosition);
 			testSunPosition = vec3(testSunPosition.x, testSunPosition.y, -testSunPosition.z);
 			*(vec3*)value = testSunPosition;

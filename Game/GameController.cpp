@@ -13,7 +13,7 @@
 #include <JuEngine/Resources/Material.hpp>
 #include <JuEngine/Resources/Mesh.hpp>
 #include <JuEngine/Resources/Shader.hpp>
-#include <JuEngine/OpenGL.hpp>
+#include <JuEngine/Resources/Texture.hpp>
 #include <JuEngine/App.hpp>
 #include <JuEngine/Services/IDataService.hpp>
 #include <JuEngine/Services/IInputService.hpp>
@@ -110,63 +110,93 @@ void GameController::LoadAssets()
 			gridIndex[temp+1] = temp+1;
 		}
 
-		App::Data()->Add<Mesh>("obj_grid", gridMesh, gridIndex, GL_LINES);
+		App::Data()->Add<Mesh>("obj_grid", gridMesh, gridIndex, MeshDrawMode::Lines);
+	}
+
+	{
+		std::vector<float> quadMesh = {
+		//    X      Y      Z      NX    NY    NZ    U     V     R     G     B
+			-0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  0.f,  1.f,  1.f,  1.f, // BL
+			 0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  0.f,  1.f,  1.f,  1.f, // BR
+			 0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f, // TR
+			 0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f, // TR
+			-0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  1.f,  1.f,  1.f,  1.f, // TL
+			-0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  0.f,  1.f,  1.f,  1.f  // BL
+		};
+
+		std::vector<unsigned int> gridIndex = {
+			0, 1, 2,
+			3, 4, 5
+		};
+
+		App::Data()->Add<Mesh>("obj_quad", quadMesh, gridIndex, MeshDrawMode::Triangles);
 	}
 
 	// ------------------------------------
 
 	// Load Textures
-	// App::Data()->Add<Texture>("tex_icon", "icon.png");
+	App::Data()->Add<Texture>("tex_awesome", "awesome_face.png");
+	App::Data()->Add<Texture>("tex_box", "container_box.png");
+	App::Data()->Add<Texture>("tex_floor", "floor_wall.png");
+	App::Data()->Add<Texture>("tex_sanic", "sanic.png");
 
 	// Load Shaders
 	//	> Vertex Shaders en uso: BaseVertexColor, BaseUniformColor, Diffuse, VertexLit
 	//	> Fragment Shaders en uso: Base, SpecularGaussian
-	App::Data()->Add<Shader>("shader_baseVertexColor", "BaseVertexColor.vert", "Base.frag");
-	App::Data()->Add<Shader>("shader_baseUniformColor", "BaseUniformColor.vert", "Base.frag");
-	App::Data()->Add<Shader>("shader_vertexLit", "VertexLit.vert", "Base.frag");
-	//App::Data()->Add<Shader>("shader_diffuse", "Diffuse.vert", "Diffuse.frag");
-	//App::Data()->Add<Shader>("shader_specularPhong", "Diffuse.vert", "SpecularPhong.frag");
-	//App::Data()->Add<Shader>("shader_specularBlinnPhong", "Diffuse.vert", "SpecularBlinnPhong.frag");
-	App::Data()->Add<Shader>("shader_specularGaussian", "Diffuse.vert", "SpecularGaussian.frag");
-	//App::Data()->Add<Shader>("shader_specularGaussianDir", "Diffuse.vert", "SpecularGaussianDir.frag");
+	App::Data()->Add<Shader>("shader_baseVertexColor", "baseVertexColor.vert", "base.frag");
+	App::Data()->Add<Shader>("shader_baseUniformColor", "baseUniformColor.vert", "base.frag");
+	App::Data()->Add<Shader>("shader_baseTextureColor", "baseTextureColor.vert", "baseTexture.frag");
+	App::Data()->Add<Shader>("shader_vertexLit", "vertexLit.vert", "base.frag");
+	//App::Data()->Add<Shader>("shader_diffuse", "diffuse.vert", "diffuse.frag");
+	//App::Data()->Add<Shader>("shader_specularPhong", "diffuse.vert", "specularPhong.frag");
+	//App::Data()->Add<Shader>("shader_specularBlinnPhong", "diffuse.vert", "specularBlinnPhong.frag");
+	App::Data()->Add<Shader>("shader_specularGaussian", "diffuse.vert", "specularGaussian.frag");
+	//App::Data()->Add<Shader>("shader_specularGaussianDir", "diffuse.vert", "specularGaussianDir.frag");
 
 	/*auto shaderTestDebug = App::Data()->Get<Shader>("shader_specularGaussian");
 	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: Diffuse.vert and SpecularGaussian.frag attributes:");
+	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag attributes:");
 	shaderTestDebug->PrintAttributeNames();
 	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: Diffuse.vert and SpecularGaussian.frag uniforms:");
+	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag uniforms:");
 	shaderTestDebug->PrintUniformNames();
 	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: Diffuse.vert and SpecularGaussian.frag uniform blocks:");
+	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag uniform blocks:");
 	shaderTestDebug->PrintUniformBlockNames();
 	App::Log()->Debug("------------------------");*/
 
 	// Load Materials
-	App::Data()->Add<Material>("mat_vertexColor", "shader_baseVertexColor", "tex_default");
-	App::Data()->Add<Material>("mat_vertexLit", "shader_vertexLit", "tex_default");
-	App::Data()->Add<Material>("mat_plane", "shader_specularGaussian", "tex_default");
-	App::Data()->Get<Material>("mat_plane")->SetDiffuseColor(vec3(0.5f, 0.5f, 0.5));
-	App::Data()->Get<Material>("mat_plane")->SetSpecularColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_plane")->SetShininessFactor(0.1f);
-	App::Data()->Add<Material>("mat_light", "shader_baseUniformColor", "tex_default");
-	App::Data()->Get<Material>("mat_light")->SetDiffuseColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Add<Material>("mat_white", "shader_specularGaussian", "tex_default");
-	App::Data()->Get<Material>("mat_white")->SetDiffuseColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_white")->SetSpecularColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_white")->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_red", "shader_specularGaussian", "tex_default");
-	App::Data()->Get<Material>("mat_red")->SetDiffuseColor(vec3(1.f, 0.02f, 0.02f));
-	App::Data()->Get<Material>("mat_red")->SetSpecularColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_red")->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_green", "shader_specularGaussian", "tex_default");
-	App::Data()->Get<Material>("mat_green")->SetDiffuseColor(vec3(0.02f, 1.f, 0.02f));
-	App::Data()->Get<Material>("mat_green")->SetSpecularColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_green")->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_blue", "shader_specularGaussian", "tex_default");
-	App::Data()->Get<Material>("mat_blue")->SetDiffuseColor(vec3(0.02f, 0.02f, 1.f));
-	App::Data()->Get<Material>("mat_blue")->SetSpecularColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Get<Material>("mat_blue")->SetShininessFactor(0.2f);
+	App::Data()->Add<Material>("mat_vertexColor", "shader_baseVertexColor");
+	App::Data()->Add<Material>("mat_vertexLit", "shader_vertexLit");
+	App::Data()->Add<Material>("mat_plane", "shader_specularGaussian");
+	App::Data()->Get<Material>("mat_plane")
+		->SetDiffuseColor(vec3(0.5f, 0.5f, 0.5))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(0.1f);
+	App::Data()->Add<Material>("mat_light", "shader_baseUniformColor");
+	App::Data()->Get<Material>("mat_light")
+		->SetDiffuseColor(vec3(1.f, 1.f, 1.f));
+	App::Data()->Add<Material>("mat_white", "shader_specularGaussian");
+	App::Data()->Get<Material>("mat_white")
+		->SetDiffuseColor(vec3(1.f, 1.f, 1.f))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(0.2f);
+	App::Data()->Add<Material>("mat_red", "shader_specularGaussian");
+	App::Data()->Get<Material>("mat_red")
+		->SetDiffuseColor(vec3(1.f, 0.02f, 0.02f))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(0.2f);
+	App::Data()->Add<Material>("mat_green", "shader_specularGaussian");
+	App::Data()->Get<Material>("mat_green")
+		->SetDiffuseColor(vec3(0.02f, 1.f, 0.02f))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(0.2f);
+	App::Data()->Add<Material>("mat_blue", "shader_specularGaussian");
+	App::Data()->Get<Material>("mat_blue")
+		->SetDiffuseColor(vec3(0.02f, 0.02f, 1.f))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(0.2f);
+	App::Data()->Add<Material>("mat_texture_test", "shader_baseTextureColor", "tex_sanic");
 
 	// Load Prefabs
 	App::Data()->Add<Prefab, Prefabs::Camera>("camera");

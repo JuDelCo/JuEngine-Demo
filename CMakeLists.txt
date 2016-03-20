@@ -28,7 +28,7 @@ message(STATUS "CMAKE_BUILD_CONFIG: ${CMAKE_BUILD_TYPE} (${BUILD_CPU_ARCH})")
 
 # -------------------------------------------------------------------------------------------------
 
-set(CMAKE_CXX_FLAGS         "-Wall -Werror -fmax-errors=5 -std=c++11 -DGLFW_DLL")
+set(CMAKE_CXX_FLAGS         "-Wall -Werror -fmax-errors=5 -std=c++11")
 set(CMAKE_CXX_FLAGS_DEBUG   "-gdwarf-2 -Og -DDEBUG_ON") # -g
 set(CMAKE_CXX_FLAGS_RELEASE "-s -O2")
 
@@ -46,18 +46,9 @@ else()
 endif()
 
 if(UNIX)
-	set(LINK_FLAGS
-		"-lGL" # OpenGL Lib
-		#"-static-libgcc" # NO
-		#"-static-libstdc++"
-		"-Wl,-rpath,./Libraries"
-		#"-Wl,-rpath,/home/judelco/Projects/Libraries/glew-1.13.0/lib" # Alternative
-	)
+	set(LINK_FLAGS "-Wl,-rpath,./Libraries")
 
-	set(GLFW_PATH "/home/judelco/Projects/Libraries/glfw-3.1.2")
-	set(GLEW_PATH "/home/judelco/Projects/Libraries/glew-1.13.0")
 	set(GLM_PATH "/home/judelco/Projects/Libraries/glm-0.9.7.1")
-	set(ASSIMP_PATH "/home/judelco/Projects/Libraries/assimp-3.1.1_20151125")
 	set(JUENGINE_PATH "/home/judelco/Projects/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
 	set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.so")
 elseif(WIN32)
@@ -83,10 +74,7 @@ elseif(WIN32)
 		)
 	endif()
 
-	set(GLFW_PATH "C:/Programacion/CppLibs/GLFW-3.1.1-${BUILD_CPU_ARCH}")
-	set(GLEW_PATH "C:/Programacion/CppLibs/GLEW-1.12.0-${BUILD_CPU_ARCH}/")
 	set(GLM_PATH "C:/Programacion/CppLibs/GLM-0.9.6.1")
-	set(ASSIMP_PATH "C:/Programacion/CppLibs/Assimp-3.1.1_20150222-${BUILD_CPU_ARCH}/")
 	set(JUENGINE_PATH "C:/Programacion/JuEngine/bin/${CMAKE_BUILD_TYPE}_${BUILD_CPU_ARCH}")
 	set(JUENGINE_DLL "${JUENGINE_PATH}/lib/libJuEngine.dll")
 endif()
@@ -98,14 +86,10 @@ project(JuEngine_Game CXX)
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${GLM_PATH}/include
-	${GLFW_PATH}/include
 	${JUENGINE_PATH}/include
 )
 
 link_directories(
-	${GLFW_PATH}/lib
-	${GLEW_PATH}/lib
-	${ASSIMP_PATH}/lib
 	${JUENGINE_PATH}/lib
 )
 
@@ -118,8 +102,6 @@ add_executable(${EXECUTABLE_NAME}
 target_link_libraries(${EXECUTABLE_NAME}
 	${LINK_FLAGS}
 	JuEngine
-	GLEW
-	assimp
 )
 
 # -------------------------------------------------------------------------------------------------

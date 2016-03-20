@@ -122,6 +122,13 @@ void Demo::LoadEntities()
 	//testObj->Add<MeshRenderer>("obj_test", "mat_white"); // mat_plane mat_white
 	//testObj->Get<Transform>()->Scale(vec3(10.01f, 10.01f, 10.01f));
 	//testObj->Get<Transform>()->Translate(vec3(0.f, 125.f, 0.f));
+
+	auto textureTestObj = pool->CreateEntity();
+	textureTestObj->Add<MeshRenderer>("obj_quad", "mat_texture_test");
+	textureTestObj->Add<Transform>(vec3(0.f, 2.f, -5.f));
+	textureTestObj->Get<Transform>()->Scale(vec3(3.f, 3.f, 3.f));
+	textureTestObj->Get<Transform>()->Rotate(vec3(0.f, 0.f, Math::DegToRad(180.f))); // TODO: BUG: Rotate texture upside-down !
+	textureTestObj->Get<Transform>()->Rotate(vec3(0.f, Math::DegToRad(-45.f), 0.f));
 }
 
 void Demo::LoadSystems()

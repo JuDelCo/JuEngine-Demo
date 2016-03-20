@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec3 normal;
@@ -6,9 +6,9 @@ layout (location = 1) in vec3 normal;
 //layout (location = 2) in vec2 texCoord;
 //layout (location = 3) in vec3 color;
 
-out vec4 vPosition;
-out vec3 vNormal;
-out vec3 vColor;
+smooth out vec4 vPosition;
+smooth out vec3 vNormal;
+smooth out vec3 vColor;
 
 layout (std140) uniform GlobalMatrices
 {
