@@ -59,10 +59,15 @@ void Camera::Execute()
 		}
 		else
 		{
-			//camera->SetFov(camera->GetFov() + (float)App::Input()->MouseGetWheelDelta() * 5.f);
-			//DebugLog::Write("Fov: %f", camera->GetFov());
-
-			transform->Translate(World::Forward / cameraMovSpeed * (float)App::Input()->MouseGetWheelDelta() * 10.f);
+			if(! App::Input()->IsHeld("shift"))
+			{
+				transform->Translate(World::Forward / cameraMovSpeed * (float)App::Input()->MouseGetWheelDelta() * 10.f);
+			}
+			else
+			{
+				camera->SetFov(camera->GetFov() - (float)App::Input()->MouseGetWheelDelta() * 5.f);
+				App::Log()->Debug("Fov: %f", camera->GetFov());
+			}
 		}
 	}
 
@@ -114,7 +119,7 @@ void Camera::Execute()
 	if(App::Input()->IsHeld("debug"))
 	{
 		//vec3 worldUp = vec3(0.5f, 0.5f, 0.f);
-		//transform->LookAt(EntityManager_old::Get("duck")->GetComponent<Transform_old>()->GetPosition(), worldUp);
+		//transform->LookAt(EntityManager_old::Get("modelTest")->GetComponent<Transform_old>()->GetPosition(), worldUp);
 	}
 
 	if(App::Input()->IsPressed("debug"))

@@ -10,10 +10,10 @@ using namespace JuEngine;
 
 namespace Prefabs
 {
-class Sun : public Prefab
+class ModelTest : public Prefab
 {
 	public:
-		Sun() { SetId("prefab_sun"); }
+		ModelTest() { SetId("prefab_modelTest"); }
 		auto Create(Pool* pool) -> EntityPtr;
 };
 }

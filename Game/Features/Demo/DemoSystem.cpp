@@ -38,11 +38,15 @@ void Demo::Execute()
 		App::Controller()->Stop();
 	}
 
+	// --------------------------------------------------------------------------------------------
+
 	static bool show_debug_window = true;
 
 	ImGui::Begin("Debug", &show_debug_window);
+	ImGui::SetWindowPos(ImVec2(10, 10));
+	ImGui::SetWindowSize(ImVec2(0,0));
 	ImGui::Text("App average %.3f ms/frame (%.1f FPS)", 1000.f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	//ImGui::SliderFloat("lightCounter", &lightCounter, 0.f, 64.f, "%.2f"); // READONLY
+	//ImGui::SliderFloat("lightCounter", &lightCounter, 0.f, 64.f, "%.2f"); // ReadOnly
 	ImGui::ColorEdit3("skycolor", (float*)&mPool->GetGroup(Matcher_AllOf(World))->GetSingleEntity()->Get<World>()->GetSkyColor()); // ReadOnly
 
 	if(ImGui::Button("Test button"))
@@ -51,18 +55,7 @@ void Demo::Execute()
 	}
 	ImGui::End();
 
-	/*
-		testBar->AddVarCallback("sunPos", VarType::DIR3,
-		[](const void* value, void*) {},
-		[](void* value, void*)
-		{
-			testSunPosition = Math::Normalize(EntityManager_old::Get("camera")->GetComponent<Transform_old>()->GetPosition() - EntityManager_old::Get("sun")->GetComponent<Transform_old>()->GetPosition());
-			testSunPosition = -EntityManager_old::Get("camera")->GetComponent<Transform_old>()->InverseTransformDirection(testSunPosition);
-			testSunPosition = vec3(testSunPosition.x, testSunPosition.y, -testSunPosition.z);
-			*(vec3*)value = testSunPosition;
-		});
-		testBar->SetVarReadOnly("sunPos", true);
-	*/
+	// --------------------------------------------------------------------------------------------
 
 	if(! App::Window()->HasFocus())
 	{
@@ -93,12 +86,6 @@ void Demo::Execute()
 	{
 		App::Log()->Info("Mainscreen level requested to load");
 		App::Level()->LoadLevel("lvl_demo");
-	}
-
-	if(App::Input()->IsPressed("debug"))
-	{
-		//DebugLog::Write("Hora actual: %s", DebugLog::GetCurrentTime().c_str());
-		//DebugLog::Write("Fecha actual: %s", DebugLog::GetCurrentDate().c_str());
 	}
 }
 }

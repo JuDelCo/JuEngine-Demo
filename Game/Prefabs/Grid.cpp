@@ -14,7 +14,7 @@ auto Grid::Create(Pool* pool) -> EntityPtr
 	auto entity = pool->CreateEntity();
 
 	entity->Add<Transform>();
-	entity->Add<MeshRenderer>("obj_grid", "mat_vertexColor");
+	entity->Add<MeshRenderer>("obj_grid", "shader_vertexColor");
 
 	return entity;
 }

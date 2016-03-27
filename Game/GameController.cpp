@@ -4,14 +4,12 @@
 
 #include "GameController.hpp"
 #include "Prefabs/Camera.hpp"
-#include "Prefabs/Duck.hpp"
 #include "Prefabs/Grid.hpp"
-#include "Prefabs/Hat.hpp"
 #include "Prefabs/Light.hpp"
-#include "Prefabs/Sun.hpp"
+#include "Prefabs/ModelTest.hpp"
 #include "Levels/Demo.hpp"
 #include <JuEngine/Resources/Material.hpp>
-#include <JuEngine/Resources/Mesh.hpp>
+#include <JuEngine/Resources/MeshLoader.hpp>
 #include <JuEngine/Resources/Shader.hpp>
 #include <JuEngine/Resources/Texture.hpp>
 #include <JuEngine/App.hpp>
@@ -45,17 +43,36 @@ void GameController::Init(const int argc, const char* argv[])
 
 void GameController::LoadAssets()
 {
+	// Load Shaders
+	App::Data()->Add<Shader>("shader_vertexColor",		"vertexColor.vert",				"vertexColor.frag");
+	//App::Data()->Add<Shader>("shader_diffuseColor",	"diffuseColor.vert",			"diffuseColor.frag");
+	//App::Data()->Add<Shader>("shader_gouraudShading",	"gouraudShading.vert",			"gouraudShading.frag");
+	App::Data()->Add<Shader>("shader_phongShading",		"phongShading.vert",			"phongShading.frag");
+
+	/*auto shaderTestDebug = App::Data()->Get<Shader>("shader_vertexColor");
+	App::Log()->Debug("------------------------");
+	App::Log()->Debug("DEBUG: vertexColor.vert and vertexColor.frag attributes:\n\n%s", shaderTestDebug->PrintAttributeNames().c_str());
+	App::Log()->Debug("------------------------");
+	App::Log()->Debug("DEBUG: vertexColor.vert and vertexColor.frag uniforms:\n\n%s", shaderTestDebug->PrintUniformNames().c_str());
+	App::Log()->Debug("------------------------");
+	App::Log()->Debug("DEBUG: vertexColor.vert and vertexColor.frag uniform blocks:\n\n%s", shaderTestDebug->PrintUniformBlockNames().c_str());
+	App::Log()->Debug("------------------------");*/
+
+	// Load Textures
+	//App::Data()->Add<Texture>("tex_sanic", "sanic.png");
+
+	// Load Materials
+	App::Data()->Add<Material>("mat_vertexColor") // Grid & Lights
+		->SetDiffuseColor(vec3(1.f, 1.f, 1.f))
+		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
+		->SetShininessFactor(32.f);
+
 	// Load Meshes
-	App::Data()->Add<Mesh>("obj_axis",       "axis.dae");
-	App::Data()->Add<Mesh>("obj_cube",       "cube.dae");
-	App::Data()->Add<Mesh>("obj_sphere",     "sphere.dae");
-	//App::Data()->Add<Mesh>("obj_cylinder", "cylinder.dae");
-	//App::Data()->Add<Mesh>("obj_cone",     "cone.dae");
-	//App::Data()->Add<Mesh>("obj_torus",    "torus.dae");
-	//App::Data()->Add<Mesh>("obj_suzanne",  "suzanne.dae");
-	App::Data()->Add<Mesh>("obj_duck",       "duck.dae");
-	App::Data()->Add<Mesh>("obj_hat",        "hat.dae");
-	//App::Data()->Add<Mesh>("obj_test",       "stress/sibenik-cathedral.obj");
+	App::Data()->Set<MeshNode>("obj_cube", MeshLoader::Load("cube.dae")); // TODO: Asignar materíal "mat_vertexColor"
+	App::Data()->Set<MeshNode>("obj_sphere", MeshLoader::Load("sphere.dae"));
+	//App::Data()->Set<MeshNode>("obj_quad", MeshLoader::GenerateQuad((new Material())->SetTexture("diffuse0", App::Data()->Get<Texture>("tex_sanic"))));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("stress/bunny/bunny2.obj"));
+	App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("stress/flowey/curso1.obj"));
 
 	// ------------------------------------
 
@@ -66,15 +83,16 @@ void GameController::LoadAssets()
 		float color;
 		std::vector<float> gridMesh;
 		std::vector<unsigned int> gridIndex;
-		gridMesh.resize(gridSize * 2 /* H&V */ * 2 * Mesh::mNumVertexAttr, 0.f);
+		unsigned int NumVertexAttr = 11;
+		gridMesh.resize(gridSize * 2 /* H&V */ * 2 * NumVertexAttr, 0.f);
 		gridIndex.resize(gridSize * 2 /* H&V */ * 2, 0);
 
 		// Generate Grid
 		for(unsigned int i = 0; i < gridSize; ++i)
 		{
-			temp = Mesh::mNumVertexAttr;
-			indexH = (i * 2 * Mesh::mNumVertexAttr);
-			indexV = indexH + (gridSize * 2 * Mesh::mNumVertexAttr);
+			temp = NumVertexAttr;
+			indexH = (i * 2 * NumVertexAttr);
+			indexV = indexH + (gridSize * 2 * NumVertexAttr);
 			color = (i%-gridOffset == 0 ? 0.5f : (i%10 == 0 ? 0.45f : 0.41f));
 
 			gridMesh[indexH+0] = gridOffset;
@@ -110,101 +128,18 @@ void GameController::LoadAssets()
 			gridIndex[temp+1] = temp+1;
 		}
 
-		App::Data()->Add<Mesh>("obj_grid", gridMesh, gridIndex, MeshDrawMode::Lines);
-	}
-
-	{
-		std::vector<float> quadMesh = {
-		//    X      Y      Z      NX    NY    NZ    U     V     R     G     B
-			-0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  0.f,  1.f,  1.f,  1.f, // BL
-			 0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  0.f,  1.f,  1.f,  1.f, // BR
-			 0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f, // TR
-			 0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f,  1.f, // TR
-			-0.5f,  0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  1.f,  1.f,  1.f,  1.f, // TL
-			-0.5f, -0.5f,  0.5f,  1.f,  1.f,  1.f,  0.f,  0.f,  1.f,  1.f,  1.f  // BL
-		};
-
-		std::vector<unsigned int> gridIndex = {
-			0, 1, 2,
-			3, 4, 5
-		};
-
-		App::Data()->Add<Mesh>("obj_quad", quadMesh, gridIndex, MeshDrawMode::Triangles);
+		auto material = App::Data()->Get<Material>("mat_vertexColor");
+		auto mesh = new Mesh(gridMesh, gridIndex, MeshDrawMode::Lines, material);
+		App::Data()->Set<MeshNode>("obj_grid", (new MeshNode())->AddMesh(mesh));
 	}
 
 	// ------------------------------------
 
-	// Load Textures
-	App::Data()->Add<Texture>("tex_awesome", "awesome_face.png");
-	App::Data()->Add<Texture>("tex_box", "container_box.png");
-	App::Data()->Add<Texture>("tex_floor", "floor_wall.png");
-	App::Data()->Add<Texture>("tex_sanic", "sanic.png");
-
-	// Load Shaders
-	//	> Vertex Shaders en uso: BaseVertexColor, BaseUniformColor, Diffuse, VertexLit
-	//	> Fragment Shaders en uso: Base, SpecularGaussian
-	App::Data()->Add<Shader>("shader_baseVertexColor", "baseVertexColor.vert", "base.frag");
-	App::Data()->Add<Shader>("shader_baseUniformColor", "baseUniformColor.vert", "base.frag");
-	App::Data()->Add<Shader>("shader_baseTextureColor", "baseTextureColor.vert", "baseTexture.frag");
-	App::Data()->Add<Shader>("shader_vertexLit", "vertexLit.vert", "base.frag");
-	//App::Data()->Add<Shader>("shader_diffuse", "diffuse.vert", "diffuse.frag");
-	//App::Data()->Add<Shader>("shader_specularPhong", "diffuse.vert", "specularPhong.frag");
-	//App::Data()->Add<Shader>("shader_specularBlinnPhong", "diffuse.vert", "specularBlinnPhong.frag");
-	App::Data()->Add<Shader>("shader_specularGaussian", "diffuse.vert", "specularGaussian.frag");
-	//App::Data()->Add<Shader>("shader_specularGaussianDir", "diffuse.vert", "specularGaussianDir.frag");
-
-	/*auto shaderTestDebug = App::Data()->Get<Shader>("shader_specularGaussian");
-	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag attributes:");
-	shaderTestDebug->PrintAttributeNames();
-	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag uniforms:");
-	shaderTestDebug->PrintUniformNames();
-	App::Log()->Debug("------------------------");
-	App::Log()->Debug("DEBUG: diffuse.vert and specularGaussian.frag uniform blocks:");
-	shaderTestDebug->PrintUniformBlockNames();
-	App::Log()->Debug("------------------------");*/
-
-	// Load Materials
-	App::Data()->Add<Material>("mat_vertexColor", "shader_baseVertexColor");
-	App::Data()->Add<Material>("mat_vertexLit", "shader_vertexLit");
-	App::Data()->Add<Material>("mat_plane", "shader_specularGaussian");
-	App::Data()->Get<Material>("mat_plane")
-		->SetDiffuseColor(vec3(0.5f, 0.5f, 0.5))
-		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
-		->SetShininessFactor(0.1f);
-	App::Data()->Add<Material>("mat_light", "shader_baseUniformColor");
-	App::Data()->Get<Material>("mat_light")
-		->SetDiffuseColor(vec3(1.f, 1.f, 1.f));
-	App::Data()->Add<Material>("mat_white", "shader_specularGaussian");
-	App::Data()->Get<Material>("mat_white")
-		->SetDiffuseColor(vec3(1.f, 1.f, 1.f))
-		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
-		->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_red", "shader_specularGaussian");
-	App::Data()->Get<Material>("mat_red")
-		->SetDiffuseColor(vec3(1.f, 0.02f, 0.02f))
-		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
-		->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_green", "shader_specularGaussian");
-	App::Data()->Get<Material>("mat_green")
-		->SetDiffuseColor(vec3(0.02f, 1.f, 0.02f))
-		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
-		->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_blue", "shader_specularGaussian");
-	App::Data()->Get<Material>("mat_blue")
-		->SetDiffuseColor(vec3(0.02f, 0.02f, 1.f))
-		->SetSpecularColor(vec3(1.f, 1.f, 1.f))
-		->SetShininessFactor(0.2f);
-	App::Data()->Add<Material>("mat_texture_test", "shader_baseTextureColor", "tex_sanic");
-
 	// Load Prefabs
-	App::Data()->Add<Prefab, Prefabs::Camera>("camera");
-	App::Data()->Add<Prefab, Prefabs::Duck>("duck");
-	App::Data()->Add<Prefab, Prefabs::Grid>("grid");
-	App::Data()->Add<Prefab, Prefabs::Hat>("hat");
-	App::Data()->Add<Prefab, Prefabs::Light>("light");
-	App::Data()->Add<Prefab, Prefabs::Sun>("sun");
+	App::Data()->Add<Prefab, Prefabs::Camera>("p_camera");
+	App::Data()->Add<Prefab, Prefabs::ModelTest>("p_modelTest");
+	App::Data()->Add<Prefab, Prefabs::Grid>("p_grid");
+	App::Data()->Add<Prefab, Prefabs::Light>("p_light");
 
 	// Load Levels
 	App::Level()->Add<Levels::Demo>();

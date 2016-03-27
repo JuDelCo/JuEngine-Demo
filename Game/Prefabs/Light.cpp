@@ -16,8 +16,9 @@ auto Light::Create(Pool* pool) -> EntityPtr
 	auto entity = pool->CreateEntity();
 
 	entity->Add<Transform>();
-	entity->Add<MeshRenderer>("obj_cube", "mat_light");
-	entity->Add<JuEngine::Light>(vec3(1.f, 1.f, 1.f), 0.2f);
+	entity->Get<Transform>()->Scale(vec3(0.1f, 0.1f, 0.1f));
+	entity->Add<MeshRenderer>("obj_cube", "shader_vertexColor");
+	entity->Add<JuEngine::Light>(vec3(1.f, 1.f, 1.f), 1.0f, LightType::LIGHT_POINT);
 	entity->Add<Components::Light>();
 
 	return entity;

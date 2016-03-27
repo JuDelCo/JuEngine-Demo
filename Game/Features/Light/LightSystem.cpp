@@ -22,7 +22,7 @@ void Light::Execute()
 
 	for(auto &light : lights)
 	{
-		light->Use<Transform>()->SetLocalPosition(vec3(sin(lightCounter + Math::PI * offset) * 5.f, 1.f, cos(lightCounter + Math::PI * offset) * 5.f));
+		light->Use<Transform>()->SetLocalPosition(vec3(sin(lightCounter + Math::PI * offset) * 5.f, 4.f, cos(lightCounter + Math::PI * offset) * 5.f));
 		offset += 0.5f;
 	}
 
