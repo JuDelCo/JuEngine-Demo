@@ -16,6 +16,6 @@ uniform Material material;
 
 void main()
 {
-	vec3 result = v_LightColor * v_Color; // * vec3(texture(material.diffuse0, v_TexCoords));
-	frag_color = vec4(result, 1.0f);
+	vec3 result = vec4(v_LightColor * v_Color, 1.0f); // * texture(material.diffuse0, v_TexCoords);
+	frag_color = result;
 }

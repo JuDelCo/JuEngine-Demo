@@ -49,11 +49,12 @@ void Demo::LoadEntities()
 	App::Data()->Get<Prefab>("p_grid")->Create(pool);
 
 	auto modelTest = App::Data()->Get<Prefab>("p_modelTest")->Create(pool);
-	modelTest->Get<Transform>()->SetLocalPosition(vec3(0.0f, 0.0f, 0.0f));
-	modelTest->Get<Transform>()->Rotate(vec3(0.f, Math::DegToRad(90.f), 0.f));
+	modelTest->Get<Transform>()->SetLocalScale(vec3(0.1f, 0.1f, 0.1f));
+	//modelTest->Get<Transform>()->SetLocalPosition(vec3(0.0f, 0.0f, 0.0f));
+	//modelTest->Get<Transform>()->Rotate(vec3(0.f, Math::DegToRad(90.f), 0.f));
 
 	auto lightSun = pool->CreateEntity();
-	lightSun->Add<Light>(vec3(1.f, 1.f, 1.f), 0.1f, JuEngine::LightType::LIGHT_DIRECTIONAL);
+	lightSun->Add<Light>(vec3(1.f, 1.f, 1.f), 0.5f, JuEngine::LightType::LIGHT_DIRECTIONAL);
 	lightSun->Add<Transform>();
 	lightSun->Get<Transform>()->Rotate(vec3(Math::DegToRad(75.f), Math::DegToRad(-25.f), 0.f), true);
 

@@ -44,10 +44,10 @@ void GameController::Init(const int argc, const char* argv[])
 void GameController::LoadAssets()
 {
 	// Load Shaders
-	App::Data()->Add<Shader>("shader_vertexColor",		"vertexColor.vert",				"vertexColor.frag");
-	//App::Data()->Add<Shader>("shader_diffuseColor",	"diffuseColor.vert",			"diffuseColor.frag");
-	//App::Data()->Add<Shader>("shader_gouraudShading",	"gouraudShading.vert",			"gouraudShading.frag");
-	App::Data()->Add<Shader>("shader_phongShading",		"phongShading.vert",			"phongShading.frag");
+	App::Data()->Add<Shader>("shader_vertexColor",		"Assets/Shaders/vertexColor.vert",		"Assets/Shaders/vertexColor.frag");
+	//App::Data()->Add<Shader>("shader_diffuseColor",	"Assets/Shaders/diffuseColor.vert",		"Assets/Shaders/diffuseColor.frag");
+	//App::Data()->Add<Shader>("shader_gouraudShading",	"Assets/Shaders/gouraudShading.vert",	"Assets/Shaders/gouraudShading.frag");
+	App::Data()->Add<Shader>("shader_phongShading",		"Assets/Shaders/phongShading.vert",		"Assets/Shaders/phongShading.frag");
 
 	/*auto shaderTestDebug = App::Data()->Get<Shader>("shader_vertexColor");
 	App::Log()->Debug("------------------------");
@@ -68,11 +68,29 @@ void GameController::LoadAssets()
 		->SetShininessFactor(32.f);
 
 	// Load Meshes
-	App::Data()->Set<MeshNode>("obj_cube", MeshLoader::Load("cube.dae")); // TODO: Asignar materíal "mat_vertexColor"
-	App::Data()->Set<MeshNode>("obj_sphere", MeshLoader::Load("sphere.dae"));
+	App::Data()->Set<MeshNode>("obj_cube", MeshLoader::Load("Assets/Models/cube.dae", MeshVertexFormat::PositionColor)); // TODO: Asignar materíal "mat_vertexColor"
+	App::Data()->Set<MeshNode>("obj_sphere", MeshLoader::Load("Assets/Models/sphere.dae", MeshVertexFormat::PositionNormalColor));
 	//App::Data()->Set<MeshNode>("obj_quad", MeshLoader::GenerateQuad((new Material())->SetTexture("diffuse0", App::Data()->Get<Texture>("tex_sanic"))));
-	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("stress/bunny/bunny2.obj"));
-	App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("stress/flowey/curso1.obj"));
+	// Test Meshes
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/axis.dae", MeshVertexFormat::PositionNormalColor));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/bunny/bunny2.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/bunny/bunny.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/crytek-sponza/banner.obj", MeshVertexFormat::PositionNormalTexture));
+	App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/crytek-sponza/sponza.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/dabrovic-sponza/sponza.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/flowey/curso1.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/head/head.OBJ", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/lost-empire/lost_empire.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/lucy/lucy_20_lakh.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/lucy/lucy_low_2.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/mitsuba/mitsuba.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/mitsuba/mitsuba-sphere.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/nanosuit/nanosuit.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/rungholt/house.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/rungholt/rungholt.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/san-miguel/san-miguel.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/sibenik-cathedral/sibenik.obj", MeshVertexFormat::PositionNormalTexture));
+	//App::Data()->Set<MeshNode>("obj_test", MeshLoader::Load("Assets/Models/stress/teapot/teapot.obj", MeshVertexFormat::PositionNormalTexture));
 
 	// ------------------------------------
 
@@ -81,9 +99,10 @@ void GameController::LoadAssets()
 		int gridOffset = -(gridSize / 2);
 		unsigned int temp, indexH, indexV;
 		float color;
+		float* floatPackedValue;
 		std::vector<float> gridMesh;
 		std::vector<unsigned int> gridIndex;
-		unsigned int NumVertexAttr = 11;
+		unsigned int NumVertexAttr = Mesh::GetNumVertexAttr(MeshVertexFormat::PositionColor);
 		gridMesh.resize(gridSize * 2 /* H&V */ * 2 * NumVertexAttr, 0.f);
 		gridIndex.resize(gridSize * 2 /* H&V */ * 2, 0);
 
@@ -95,29 +114,27 @@ void GameController::LoadAssets()
 			indexV = indexH + (gridSize * 2 * NumVertexAttr);
 			color = (i%-gridOffset == 0 ? 0.5f : (i%10 == 0 ? 0.45f : 0.41f));
 
+			uint32_t packedValue = 0;
+			packedValue = packedValue | (((unsigned int)(color * 1023)) << 20); // B
+			packedValue = packedValue | (((unsigned int)(color * 1023)) << 10); // G
+			packedValue = packedValue | (((unsigned int)(color * 1023)) << 0);  // R
+			floatPackedValue = (float*)&packedValue;
+
 			gridMesh[indexH+0] = gridOffset;
 			gridMesh[indexH+2] = (float)i + gridOffset;
-			gridMesh[indexH+4] = 1.f;
-			gridMesh[indexH+8] = color;
-			gridMesh[indexH+9] = color;
-			gridMesh[indexH+10] = color;
+			gridMesh[indexH+3] = *floatPackedValue;
+
 			gridMesh[indexH+temp+0] = (float)gridSize + gridOffset;
 			gridMesh[indexH+temp+2] = (float)i + gridOffset;
-			gridMesh[indexH+temp+8] = color;
-			gridMesh[indexH+temp+9] = color;
-			gridMesh[indexH+temp+10] = color;
+			gridMesh[indexH+temp+3] = *floatPackedValue;
 
 			gridMesh[indexV+0] =(float) i + gridOffset;
 			gridMesh[indexV+2] = gridOffset;
-			gridMesh[indexV+4] = 1.f;
-			gridMesh[indexV+8] = color;
-			gridMesh[indexV+9] = color;
-			gridMesh[indexV+10] = color;
+			gridMesh[indexV+3] = *floatPackedValue;
+
 			gridMesh[indexV+temp+0] = (float)i + gridOffset;
 			gridMesh[indexV+temp+2] = (float)gridSize + gridOffset;
-			gridMesh[indexV+temp+8] = color;
-			gridMesh[indexV+temp+9] = color;
-			gridMesh[indexV+temp+10] = color;
+			gridMesh[indexV+temp+3] = *floatPackedValue;
 
 			temp = i * 2;
 			gridIndex[temp] = temp;
@@ -129,7 +146,7 @@ void GameController::LoadAssets()
 		}
 
 		auto material = App::Data()->Get<Material>("mat_vertexColor");
-		auto mesh = new Mesh(gridMesh, gridIndex, MeshDrawMode::Lines, material);
+		auto mesh = new Mesh(gridMesh, gridIndex, MeshDrawMode::Lines, MeshVertexFormat::PositionColor, material);
 		App::Data()->Set<MeshNode>("obj_grid", (new MeshNode())->AddMesh(mesh));
 	}
 

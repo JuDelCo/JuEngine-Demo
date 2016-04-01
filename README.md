@@ -29,6 +29,9 @@ Screenshots
 
 Note: Random-ordered and may be very old
 
+![Img sponza general](http://i.imgur.com/lpOFhBi.png)
+![Img sponza plants](http://i.imgur.com/xHGaMeh.jpg)
+![Img minecraft scene](http://i.imgur.com/DQxd6yO.png)
 ![Img dark space](http://i.imgur.com/df8qBDv.png)
 ![Img gui](http://i.imgur.com/ZEeLwL1.png)
 ![Img sunlight](http://i.imgur.com/QSTiMA5.png)
@@ -38,4 +41,3 @@ Note: Random-ordered and may be very old
 ![Img statue](http://i.imgur.com/qAzLxSm.jpg)
 ![Img bunny](http://i.imgur.com/SC6AH6g.jpg)
 ![Img teapot](http://i.imgur.com/wHa82v4.jpg)
-
